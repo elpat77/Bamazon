@@ -10,7 +10,7 @@ department_name VARCHAR (30) NOT NULL,
 sub_department VARCHAR (30),
 price DECIMAL (50,2) NOT NULL,
 stock_quantity INT UNSIGNED NOT NULL,
-PRIMARY KEY (id, product_name)
+PRIMARY KEY (id, item_id, product_name)
 );
 
 INSERT INTO products (item_id, product_name, department_name, sub_department, price, stock_quantity)
@@ -47,4 +47,6 @@ INSERT INTO products (item_id, product_name, department_name, sub_department, pr
 VALUES ('GHM-04', 'Google Home Mini  Gen4', 'Electronics', 'IOT', 25.00, 75) ;
 
 SELECT * FROM products;
+
+SELECT * FROM products WHERE item_id;
 
