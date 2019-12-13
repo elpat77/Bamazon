@@ -15,54 +15,39 @@ const connection = mysql.createConnection({
 connection.connect(err => {
     if (err) throw err;
     // console.log(`you are connected to thread ID: ${connection.threadId}`);
-    showTable("products");
-    findByItemId('products', 'item_id');
+    selectProduct()
+    showTable();
     connection.end();
 })
 
 function selectProduct() {
-    var product1 = "";
 
     showTable = table => {
-        connection.query(`SELECT * from ??`, table, (err, res) => {
+        connection.query(`SELECT * from products`, table, (err, res) => {
             if (err) throw (err);
-            // console.log(res);
-            // console.table(res);
-        })
-    }
-
-    findByItemId = table => {
-        connection.query(`SELECT product_name from ??`, table, (err, res) => {
-            if (err) throw (err);
-            // console.log(res);
-            // console.table(res[1]);
-            product1 = res[1].product_name;
-            console.log(product1);
-        })
-    }
-    function runID() {
-        inquirer.prompt({
-            type: 'list',
-            message: "What is the product ID of your item?",
-            choices: [product1, 'b', 'exit'],
-            name: "choice"
-        }).then(res => {
-            if (res.choice === 'exit') {
-                process.exit();
-            } else {
-                console.log("you chose " + res.choice);
-                runAmount();
+            inquirer.prompt([{
+                type: 'list',
+                name: "choice",
+                choices: function () {
+                    var products = [];
+                    for (let i = 0; i < res.length; i++) {
+                        products.push(res[i].product_name);
+                        // console.log(products);
+                    }
+                    return products
+                },
+                message: "What item would you like to buy?"
+            },
+            {
+                type: 'input',
+                message: 'How many items would you like to buy?',
+                name: 'amount',
+                validate: function (value) {
+                    return !isNaN(value);
+                }
             }
+            ])
         })
     }
-
-    function runAmount() {
-        inquirer.prompt({
-            type: 'input',
-            message: 'How many items would you like to buy?',
-            name: 'amount'
-        })
-    }
-    runID()
 }
-selectProduct()
+
