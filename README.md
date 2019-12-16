@@ -1,7 +1,7 @@
 # Welcome to Bamazon!
 
 ```
-* This is an Amazon-like storefront using MySQL and node.js created as a homework
+This is an Amazon-like storefront using MySQL and node.js created as a homework
 
 There is a customer facing portal, where users can  view the inventory and purchase an item. If there is not enough stock of a particular item, we would be unable to fulfill your purchase as the transaction 
 will not go through.
@@ -14,7 +14,8 @@ Happy shopping!
 ```
 
 **What Each JavaScript Does**
-_bamazonCustomer.js_
+
+* _bamazonCustomer.js_
 
 * Prints the products in the store.
 

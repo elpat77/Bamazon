@@ -43,7 +43,7 @@ function selectProduct() {
             {
                 type: 'input',
                 message: 'How many items would you like to buy?',
-                name: 'amount',
+                name: 'amount'
             }
             ]).then(function (selection) {
                 //check what ids the product name
@@ -101,12 +101,7 @@ function confirmPurchase() {
     })
 }
 
-// addTo = (table, obj) => {
-//     connection.query("INSERT INTO ?? SET ?", [table, obj],
-//         (err, res) => {
-//             if (err) throw err;
-//         });
-// }
+
 
 
 // updateTable = (updateQuanitity, product_name) => {
