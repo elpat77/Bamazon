@@ -19,9 +19,6 @@ connection.connect(err => {
     // console.log(`you are connected to thread ID: ${connection.threadId}`);
     selectProduct();
     showTable('products');
-    // updateTable(23, 'Mens Barcelona Jersey Large');
-    // addTo('products', { item_id: "SFWGH-01", product_name: "SF Warriors Girls Hat", department_name: "Sports", sub_department: "Basketball", price: "15.99", stock_quantity: '12' })
-
 })
 
 function selectProduct() {
@@ -83,9 +80,8 @@ function confirmPurchase() {
     }]).then(function (purchase) {
         if (purchase.selected === 'Yes please!') {
             let newStock = itemSelected.stock_quantity - purchaseAmount;
-            // console.log("new stock is", newStock);
             let productBought = itemSelected.product_name;
-            // console.log("product name", productBought);
+
             console.log("Thanks for your purchase!\n Your order for", purchaseAmount, productBought, "will ship out soon!");
 
             connection.query('UPDATE products SET ? WHERE ?', [{ stock_quantity: newStock }, { product_name: productBought }],
