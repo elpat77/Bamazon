@@ -3,7 +3,7 @@ var inquirer = require('inquirer');
 var itemSelected;
 var purchaseAmount;
 var salesAmount;
-var newStock = [];
+
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -66,7 +66,9 @@ function selectProduct() {
                 //if don't have enough then "error message or shop for something else"
                 else {
                     console.log("Sorry we don't have that quantity in stock. Our current stock for that item is ", itemSelected.stock_quantity, "- Please try again. -");
+                    process.exit();
                 }
+
             })
         })
     }
@@ -80,18 +82,16 @@ function confirmPurchase() {
         message: 'Do you want to proceed with the purchase?'
     }]).then(function (purchase) {
         if (purchase.selected === 'Yes please!') {
-            console.log("Thanks for your purchase, your order will ship out soon!");
-            newStock = itemSelected.stock_quantity - purchaseAmount;
-            productBought = itemSelected.product_name;
-            // console.log(itemSelected.id);
+            let newStock = itemSelected.stock_quantity - purchaseAmount;
             // console.log("new stock is", newStock);
+            let productBought = itemSelected.product_name;
             // console.log("product name", productBought);
-            // updateInventory(newStock, productBought);
-            connection.query('UPDATE products SET ? WHERE ?', [{ stock_quantity: newStock }, { item_id: itemSelected.id }],
+            console.log("Thanks for your purchase!\n Your order for", purchaseAmount, productBought, "will ship out soon!");
+
+            connection.query('UPDATE products SET ? WHERE ?', [{ stock_quantity: newStock }, { product_name: productBought }],
                 (err) => {
                     if (err) throw (err);
                 });
-
             process.exit();
 
         } else {
@@ -101,28 +101,3 @@ function confirmPurchase() {
     })
 }
 
-
-
-
-// updateTable = (updateQuanitity, product_name) => {
-//     connection.query('UPDATE products SET ? Where product_name = ?',
-//         [
-//             { stock_quantity: updateQuanitity },
-//             { product_name }],
-//         (err, res) => {
-//             if (err) throw (err);
-//             console.table(res);
-//         })
-// }
-
-updateInventory = (quantity, product_name) => {
-    connection.query(
-        `UPDATE bamazon.products SET stock_quantity = ${quantity} WHERE product_name = ${product_name}`,
-        err => {
-            if (err) console.log(err);
-            console.log(
-                chalk.green("You have successfully updated the inventory")
-            );
-        }
-    );
-};
