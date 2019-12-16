@@ -12,25 +12,26 @@ inventory (less than 5 items in stock), add items to the inventory and additiona
 
 Happy shopping! 
 ```
-
+-----------------------
 **What Each JavaScript Does**
 
 1. `BamazonCustomer.js`
-`This is the application used by customers in order to make a purcahse`
+  `This is the application used by customers in order to make a purchase`
 
 * Prints the products in the store.
 
 * Displays a list of products available for purchase.
 
-* Asks for the purcahse quantity.
+* Asks for the purchase quantity.
 
 * If there is a sufficient amount of the product in stock, it will return the total amount  for that purchase.
 However, if there is not enough of the product in stock, it will tell the user that there isn't enough of the product and exit out of the application.
 
 * If the purchase goes through, it updates the stock quantity in the database to reflect the purchase.
 
+-----------------------
 2. `BamazonManager.js`
-`This application works as a Inventory Management Tool, used for viewing or editing the products database`
+  `This application works as a Inventory Management Tool, used for viewing or editing the products database`
 
     * Starts with a menu:
 
@@ -50,10 +51,12 @@ However, if there is not enough of the product in stock, it will tell the user t
 
     * If the manager selects `Exit`, it ends the session.
 
-
+-----------------------
 **Running the application**
 
+* Create a MYSQL database called 'bamazon', reference schema.sql
 * Clone repo.
+* Node.js - Download the latest version of Node https://nodejs.org/en/
 * Run command in Terminal or Gitbash 'npm install'
 * Run command in Terminal or Gitbash 'npm init -y'
 * Run command in Terminal or Gitbash 'npm install inquirer'
