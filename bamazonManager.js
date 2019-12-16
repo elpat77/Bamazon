@@ -28,8 +28,8 @@ function options() {
     inquirer.prompt({
         type: 'list',
         name: 'selected',
-        message: 'Welcom to the Inventory Managmengt Tool. What would you like to do?',
-        choices: ['View all products', 'View items with low inventory', 'Add new product', 'Update existing product', 'Exit']
+        message: 'Welcome to the Inventory Management Tool. What would you like to do?',
+        choices: ['View all products', 'View items with low inventory', 'Add new product', 'Update product inventory', 'Exit']
     }).then(response => {
         if (response.selected === 'View all products') {
             viewProducts();
@@ -37,8 +37,8 @@ function options() {
             viewLowInventory();
         } else if (response.selected === 'Add new product') {
             addProduct();
-        } else if (response.selected === 'Update existing product') {
-            updateProduct();
+        } else if (response.selected === 'Update product inventory') {
+            updateAmount();
         } else if (response.selected === 'Exit') {
             process.exit();
         }
@@ -59,6 +59,45 @@ function viewLowInventory() {
         console.table(res);
         connection.end();
     });
+}
+
+function updateAmount() {
+    connection.query(`SELECT * from products`, function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        var products = [];
+        for (let i = 0; i < res.length; i++) {
+            products.push(res[i].product_name);
+        }
+        inquirer.prompt([{
+            type: 'list',
+            name: "productChange",
+            choices: products,
+            message: "Select an item to change inventory level"
+        },
+        {
+            type: 'input',
+            name: "newStock",
+            message: "Please enter the new quantity"
+        },
+        ]).then(result => {
+            let productChange = result.productChange;
+            console.log(productChange);
+
+            connection.query('SELECT `stock_quantity` FROM products WHERE ?', { product_name: productChange }, (err, res) => {
+                if (err) throw err;
+                // let currentStock = (res[0].stock_quantity);
+                // console.log(currentStock)
+                let newStock = result.newStock;
+                // console.log(newStock);
+                connection.query('UPDATE products SET ? WHERE ?', [{ stock_quantity: newStock }, { product_name: productChange }], (err, res) => {
+                    if (err) throw err;
+                });
+                console.log("Your product has been updated!\n The new inventory quantity for", productChange, "is now", newStock, "\n");
+                options();
+            })
+        })
+    })
 }
 
 function addProduct() {
@@ -103,30 +142,5 @@ function addProduct() {
                 if (err) throw err;
                 viewProducts()
             });
-
         });
-}
-
-function updateProduct() {
-    inquirer.prompt(
-        [{
-            type: 'input',
-            message: 'What is the name of the product you want to edit?',
-            name: 'updateItem'
-        },
-        {
-            type: 'list',
-            name: "choice",
-            message: "What would you like to do?",
-            choices: ["Change Name", "Change Department", "Change Price", "Change Stock Amount"]
-        },
-        ]).then(result => {
-            let choice = result.choice;
-            connection.query('SELECT * FROM products WHERE ?', { product_name: result.choice }, (err, res) => {
-                if (err) throw err;
-                console.log(choice);
-
-            })
-
-        })
 }
